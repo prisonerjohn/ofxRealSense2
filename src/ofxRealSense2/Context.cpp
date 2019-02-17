@@ -14,8 +14,10 @@ namespace ofxRealSense2
         clear();
     }
 
-    void Context::setup()
+    void Context::setup(bool autoStart)
     {
+        this->autoStart = autoStart;
+
         // Register callback for tracking which devices are currently connected.
         this->context.set_devices_changed_callback([&](rs2::event_information & info)
         {
@@ -80,6 +82,16 @@ namespace ofxRealSense2
         ofLogNotice(__FUNCTION__) << "Add device " << serialNumber;
         this->devices.emplace(serialNumber, std::make_shared<Device>(device));
         this->deviceAddedEvent.notify(serialNumber);
+
+        if (this->autoStart)
+        {
+            // Start the device.
+            ofLogNotice(__FUNCTION__) << "Start device " << serialNumber;
+            auto device = this->devices.at(serialNumber);
+            device->startPipeline();
+            device->enableDepth();
+            device->enableColor();
+        }
     }
 
     void Context::removeDevices(const rs2::event_information & info)

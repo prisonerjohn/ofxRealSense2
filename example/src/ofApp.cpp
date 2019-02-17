@@ -2,14 +2,15 @@
 
 void ofApp::setup()
 {
-    this->eventListeners.push(this->context.deviceAddedEvent.newListener([&](std::string serialNumber)
-    {
-        ofLogNotice(__FUNCTION__) << "Starting device " << serialNumber;
-        auto device = this->context.getDevice(serialNumber);
-        device->startPipeline();
-        device->enableDepth();
-        device->enableColor();
-    }));
+    //this->eventListeners.push(this->context.deviceAddedEvent.newListener([&](std::string serialNumber)
+    //{
+    //    ofLogNotice(__FUNCTION__) << "Starting device " << serialNumber;
+    //    auto device = this->context.getDevice(serialNumber);
+    //    device->startPipeline();
+    //    device->enableDepth();
+    //    device->enableColor();
+    //}));
+    //this->context.setup(false);
  
     this->context.setup();
 }

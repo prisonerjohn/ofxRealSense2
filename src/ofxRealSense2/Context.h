@@ -15,7 +15,7 @@ namespace ofxRealSense2
         Context();
         ~Context();
 
-        void setup();
+        void setup(bool autoStart = true);
         void clear();
 
         void update();
@@ -37,5 +37,6 @@ namespace ofxRealSense2
         rs2::context context;
         std::mutex mutex;
         std::map<std::string, std::shared_ptr<Device>> devices;
+        bool autoStart;
     };
 }
