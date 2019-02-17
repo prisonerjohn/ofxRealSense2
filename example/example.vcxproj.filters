@@ -1,0 +1,156 @@
+<?xml version="1.0"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<ItemGroup>
+		<ClCompile Include="src\ofApp.cpp">
+			<Filter>src</Filter>
+		</ClCompile>
+		<ClCompile Include="src\main.cpp">
+			<Filter>src</Filter>
+		</ClCompile>
+		<ClCompile Include="src\main.cpp">
+			<Filter>src</Filter>
+		</ClCompile>
+		<ClCompile Include="src\ofApp.cpp">
+			<Filter>src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxRealSense2\src\ofxRealSense2\Context.cpp">
+			<Filter>addons\ofxRealSense2\src\ofxRealSense2</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxRealSense2\src\ofxRealSense2\Device.cpp">
+			<Filter>addons\ofxRealSense2\src\ofxRealSense2</Filter>
+		</ClCompile>
+	</ItemGroup>
+	<ItemGroup>
+		<Filter Include="src">
+			<UniqueIdentifier>{d8376475-7454-4a24-b08a-aac121d3ad6f}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons">
+			<UniqueIdentifier>{71834F65-F3A9-211E-73B8-DC85}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxRealSense2">
+			<UniqueIdentifier>{5E414EC7-938D-B210-1EA5-4B7E}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxRealSense2\src">
+			<UniqueIdentifier>{0AD0D798-2777-D570-3A9E-A47E}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxRealSense2\src\ofxRealSense2">
+			<UniqueIdentifier>{4CD48D47-184F-1E2D-B37F-4A33}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxRealSense2\libs">
+			<UniqueIdentifier>{31F61894-F298-D1AC-CA61-3602}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxRealSense2\libs\librealsense2">
+			<UniqueIdentifier>{325F962A-28D1-7C54-A17F-044D}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxRealSense2\libs\librealsense2\include">
+			<UniqueIdentifier>{C8A8D209-5674-CAC2-DF79-67F1}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxRealSense2\libs\librealsense2\include\librealsense2">
+			<UniqueIdentifier>{068FD0DD-76A7-5248-0AD6-B638}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxRealSense2\libs\librealsense2\include\librealsense2\h">
+			<UniqueIdentifier>{30018C1E-0A7B-5554-EBC0-4ED0}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxRealSense2\libs\librealsense2\include\librealsense2\hpp">
+			<UniqueIdentifier>{30026F3B-2A45-B0D5-2BC8-8157}</UniqueIdentifier>
+		</Filter>
+	</ItemGroup>
+	<ItemGroup>
+		<ClInclude Include="src\ofApp.h">
+			<Filter>src</Filter>
+		</ClInclude>
+		<ClInclude Include="src\ofApp.h">
+			<Filter>src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxRealSense2\src\ofxRealSense2\Context.h">
+			<Filter>addons\ofxRealSense2\src\ofxRealSense2</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxRealSense2\src\ofxRealSense2\Device.h">
+			<Filter>addons\ofxRealSense2\src\ofxRealSense2</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxRealSense2\src\ofxRealSense2.h">
+			<Filter>addons\ofxRealSense2\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxRealSense2\libs\librealsense2\include\librealsense2\h\rs_advanced_mode_command.h">
+			<Filter>addons\ofxRealSense2\libs\librealsense2\include\librealsense2\h</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxRealSense2\libs\librealsense2\include\librealsense2\h\rs_config.h">
+			<Filter>addons\ofxRealSense2\libs\librealsense2\include\librealsense2\h</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxRealSense2\libs\librealsense2\include\librealsense2\h\rs_context.h">
+			<Filter>addons\ofxRealSense2\libs\librealsense2\include\librealsense2\h</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxRealSense2\libs\librealsense2\include\librealsense2\h\rs_device.h">
+			<Filter>addons\ofxRealSense2\libs\librealsense2\include\librealsense2\h</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxRealSense2\libs\librealsense2\include\librealsense2\h\rs_frame.h">
+			<Filter>addons\ofxRealSense2\libs\librealsense2\include\librealsense2\h</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxRealSense2\libs\librealsense2\include\librealsense2\h\rs_internal.h">
+			<Filter>addons\ofxRealSense2\libs\librealsense2\include\librealsense2\h</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxRealSense2\libs\librealsense2\include\librealsense2\h\rs_option.h">
+			<Filter>addons\ofxRealSense2\libs\librealsense2\include\librealsense2\h</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxRealSense2\libs\librealsense2\include\librealsense2\h\rs_pipeline.h">
+			<Filter>addons\ofxRealSense2\libs\librealsense2\include\librealsense2\h</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxRealSense2\libs\librealsense2\include\librealsense2\h\rs_processing.h">
+			<Filter>addons\ofxRealSense2\libs\librealsense2\include\librealsense2\h</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxRealSense2\libs\librealsense2\include\librealsense2\h\rs_record_playback.h">
+			<Filter>addons\ofxRealSense2\libs\librealsense2\include\librealsense2\h</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxRealSense2\libs\librealsense2\include\librealsense2\h\rs_sensor.h">
+			<Filter>addons\ofxRealSense2\libs\librealsense2\include\librealsense2\h</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxRealSense2\libs\librealsense2\include\librealsense2\h\rs_types.h">
+			<Filter>addons\ofxRealSense2\libs\librealsense2\include\librealsense2\h</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxRealSense2\libs\librealsense2\include\librealsense2\hpp\rs_context.hpp">
+			<Filter>addons\ofxRealSense2\libs\librealsense2\include\librealsense2\hpp</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxRealSense2\libs\librealsense2\include\librealsense2\hpp\rs_device.hpp">
+			<Filter>addons\ofxRealSense2\libs\librealsense2\include\librealsense2\hpp</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxRealSense2\libs\librealsense2\include\librealsense2\hpp\rs_frame.hpp">
+			<Filter>addons\ofxRealSense2\libs\librealsense2\include\librealsense2\hpp</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxRealSense2\libs\librealsense2\include\librealsense2\hpp\rs_internal.hpp">
+			<Filter>addons\ofxRealSense2\libs\librealsense2\include\librealsense2\hpp</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxRealSense2\libs\librealsense2\include\librealsense2\hpp\rs_pipeline.hpp">
+			<Filter>addons\ofxRealSense2\libs\librealsense2\include\librealsense2\hpp</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxRealSense2\libs\librealsense2\include\librealsense2\hpp\rs_processing.hpp">
+			<Filter>addons\ofxRealSense2\libs\librealsense2\include\librealsense2\hpp</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxRealSense2\libs\librealsense2\include\librealsense2\hpp\rs_record_playback.hpp">
+			<Filter>addons\ofxRealSense2\libs\librealsense2\include\librealsense2\hpp</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxRealSense2\libs\librealsense2\include\librealsense2\hpp\rs_sensor.hpp">
+			<Filter>addons\ofxRealSense2\libs\librealsense2\include\librealsense2\hpp</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxRealSense2\libs\librealsense2\include\librealsense2\hpp\rs_types.hpp">
+			<Filter>addons\ofxRealSense2\libs\librealsense2\include\librealsense2\hpp</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxRealSense2\libs\librealsense2\include\librealsense2\rs.h">
+			<Filter>addons\ofxRealSense2\libs\librealsense2\include\librealsense2</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxRealSense2\libs\librealsense2\include\librealsense2\rs.hpp">
+			<Filter>addons\ofxRealSense2\libs\librealsense2\include\librealsense2</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxRealSense2\libs\librealsense2\include\librealsense2\rsutil.h">
+			<Filter>addons\ofxRealSense2\libs\librealsense2\include\librealsense2</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxRealSense2\libs\librealsense2\include\librealsense2\rs_advanced_mode.h">
+			<Filter>addons\ofxRealSense2\libs\librealsense2\include\librealsense2</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxRealSense2\libs\librealsense2\include\librealsense2\rs_advanced_mode.hpp">
+			<Filter>addons\ofxRealSense2\libs\librealsense2\include\librealsense2</Filter>
+		</ClInclude>
+	</ItemGroup>
+	<ItemGroup>
+		<ResourceCompile Include="icon.rc" />
+	</ItemGroup>
+</Project>
