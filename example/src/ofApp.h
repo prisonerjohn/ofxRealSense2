@@ -17,4 +17,6 @@ public:
 
     ofxRealSense2::Context context;
     ofEventListeners eventListeners;
+
+    ofEasyCam cam;
 };

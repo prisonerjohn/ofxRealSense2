@@ -1,5 +1,7 @@
 #include "Device.h"
 
+#include "ofLog.h"
+
 namespace ofxRealSense2
 {
     Device::Device(rs2::device device)
@@ -35,6 +37,8 @@ namespace ofxRealSense2
     void Device::disableDepth()
     {
         this->config.disable_stream(RS2_STREAM_DEPTH);
+        this->depthTex.clear();
+        this->rawDepthTex.clear();
         this->depthEnabled = false;
     }
 
@@ -50,6 +54,7 @@ namespace ofxRealSense2
     void Device::disableInfrared()
     {
         this->config.disable_stream(RS2_STREAM_INFRARED);
+        this->infraredTex.clear();
         this->infraredEnabled = false;
     }
 
@@ -65,7 +70,23 @@ namespace ofxRealSense2
     void Device::disableColor()
     {
         this->config.disable_stream(RS2_STREAM_COLOR);
+        this->colorTex.clear();
         this->colorEnabled = false;
+    }
+
+    void Device::enablePoints()
+    {
+        if (!this->depthEnabled)
+        {
+            this->enableDepth();
+        }
+        this->pointsEnabled = true;
+    }
+
+    void Device::disablePoints()
+    {
+        this->pointsVbo.clear();
+        this->pointsEnabled = false;
     }
 
     void Device::startPipeline()
@@ -101,20 +122,41 @@ namespace ofxRealSense2
         while (isThreadRunning())
         {
             rs2::frameset frameset = this->pipe.wait_for_frames();
+            if (this->depthEnabled)
+            {
+                auto depthFrame = frameset.get_depth_frame();
+
+                if (this->pointsEnabled)
+                {
+                    // Generate the pointcloud and texture mappings.
+                    this->points = this->pointCloud.calculate(depthFrame);
+                }
+
+                this->depthQueue.enqueue(depthFrame);
+            }
             if (this->colorEnabled)
             {
                 auto colorFrame = frameset.get_color_frame();
+
+                if (this->pointsEnabled)
+                {
+                    // Map point cloud to color frame.
+                    this->pointCloud.map_to(colorFrame);
+                }
+
                 this->colorQueue.enqueue(colorFrame);
             }
             if (this->infraredEnabled)
             {
                 auto infraredFrame = frameset.get_infrared_frame();
+
+                if (this->pointsEnabled && !this->colorEnabled)
+                {
+                    // Map point cloud to infrared frame.
+                    this->pointCloud.map_to(infraredFrame);
+                }
+
                 this->infraredQueue.enqueue(infraredFrame);
-            }
-            if (this->depthEnabled)
-            {
-                auto depthFrame = frameset.get_depth_frame();
-                this->depthQueue.enqueue(depthFrame);
             }
         }
     }
@@ -159,6 +201,24 @@ namespace ofxRealSense2
                 auto normalizedDepthFrame = this->colorizer.process(depthFrame);
                 auto normalizedDepthData = (uint8_t *)normalizedDepthFrame.get_data();
                 this->depthTex.loadData(normalizedDepthData, this->depthWidth, this->depthHeight, GL_RGB);
+
+                if (this->pointsEnabled)
+                {
+                    // Upload point data to the vbo.
+                    auto vertices = this->points.get_vertices();
+                    auto texCoords = this->points.get_texture_coordinates();
+                    ofLogVerbose(__FUNCTION__) << "Uploading " << this->points.size() << " points";
+                    if (this->pointsVbo.getNumVertices() < this->points.size())
+                    {
+                        this->pointsVbo.setVertexData((const float *)vertices, 3, this->points.size(), GL_STREAM_DRAW);
+                        this->pointsVbo.setTexCoordData((const float *)texCoords, this->points.size(), GL_STREAM_DRAW);
+                    }
+                    else
+                    {
+                        this->pointsVbo.updateVertexData((const float *)vertices, this->points.size());
+                        this->pointsVbo.updateTexCoordData((const float *)texCoords, this->points.size());
+                    }
+                }
             }
         }
     }
@@ -183,12 +243,27 @@ namespace ofxRealSense2
         return this->colorTex;
     }
 
+    const ofVbo & Device::getPointsVbo() const
+    {
+        return this->pointsVbo;
+    }
+
+    const size_t Device::getNumPoints() const
+    {
+        return this->points.size();
+    }
+
     const rs2::device & Device::getNativeDevice() const
     {
         return this->device;
     }
 
-    const rs2::pipeline_profile & Device::getProfile() const
+    const rs2::pipeline & Device::getNativePipeline() const
+    {
+        return this->pipe;
+    }
+
+    const rs2::pipeline_profile & Device::getNativeProfile() const
     {
         return this->profile;
     }

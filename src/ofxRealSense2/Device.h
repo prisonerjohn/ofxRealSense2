@@ -4,6 +4,7 @@
 
 #include "ofTexture.h"
 #include "ofThread.h"
+#include "ofVbo.h"
 
 namespace ofxRealSense2
 {
@@ -23,6 +24,9 @@ namespace ofxRealSense2
         void enableColor(int width = 640, int height = 360, int fps = 30);
         void disableColor();
 
+        void enablePoints();
+        void disablePoints();
+         
         void startPipeline();
         void stopPipeline();
         bool isRunning() const;
@@ -35,8 +39,12 @@ namespace ofxRealSense2
         const ofTexture & getInfraredTex() const;
         const ofTexture & getColorTex() const;
 
+        const ofVbo & getPointsVbo() const;
+        const size_t getNumPoints() const;
+
         const rs2::device & getNativeDevice() const;
-        const rs2::pipeline_profile & getProfile() const;
+        const rs2::pipeline & getNativePipeline() const;
+        const rs2::pipeline_profile & getNativeProfile() const;
 
     private:
         rs2::device device;
@@ -65,5 +73,10 @@ namespace ofxRealSense2
         bool colorEnabled;
         rs2::frame_queue colorQueue;
         ofTexture colorTex;
+
+        rs2::pointcloud pointCloud;
+        rs2::points points;
+        bool pointsEnabled;
+        ofVbo pointsVbo;
     };
 }

@@ -2,17 +2,20 @@
 
 void ofApp::setup()
 {
-    //this->eventListeners.push(this->context.deviceAddedEvent.newListener([&](std::string serialNumber)
-    //{
-    //    ofLogNotice(__FUNCTION__) << "Starting device " << serialNumber;
-    //    auto device = this->context.getDevice(serialNumber);
-    //    device->startPipeline();
-    //    device->enableDepth();
-    //    device->enableColor();
-    //}));
-    //this->context.setup(false);
+    ofDisableArbTex();
+
+    this->eventListeners.push(this->context.deviceAddedEvent.newListener([&](std::string serialNumber)
+    {
+        ofLogNotice(__FUNCTION__) << "Starting device " << serialNumber;
+        auto device = this->context.getDevice(serialNumber);
+        device->startPipeline();
+        device->enableDepth();
+        device->enableColor();
+        device->enablePoints();
+    }));
+    this->context.setup(false);
  
-    this->context.setup();
+    //this->context.setup();
 }
 
 void ofApp::exit()
@@ -39,6 +42,23 @@ void ofApp::draw()
         ++it;
         ++i;
     }
+
+    this->cam.begin();
+    ofPushMatrix();
+    ofScale(10);
+    {
+        auto it = this->context.getDevices().begin();
+        while (it != this->context.getDevices().end())
+        {
+            it->second->getColorTex().bind();
+            it->second->getPointsVbo().draw(GL_POINTS, 0, it->second->getNumPoints());
+            it->second->getColorTex().unbind();
+
+            ++it;
+        }
+    }
+    ofPopMatrix();
+    this->cam.end();
     
     ofDrawBitmapString(ofToString(ofGetFrameRate()), 10, 10);
 }
