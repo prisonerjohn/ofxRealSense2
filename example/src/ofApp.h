@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ofMain.h"
+#include "ofxGui.h"
 #include "ofxRealSense2.h"
 
 class ofApp
@@ -19,4 +20,6 @@ public:
     ofEventListeners eventListeners;
 
     ofEasyCam cam;
+
+    ofxPanel guiPanel;
 };

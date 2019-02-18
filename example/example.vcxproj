@@ -100,7 +100,7 @@
 			<PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
 			<RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
 			<WarningLevel>Level3</WarningLevel>
-			<AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);src;..\..\..\addons\ofxRealSense2\libs;..\..\..\addons\ofxRealSense2\libs\librealsense2;..\..\..\addons\ofxRealSense2\libs\librealsense2\export;..\..\..\addons\ofxRealSense2\libs\librealsense2\include;..\..\..\addons\ofxRealSense2\libs\librealsense2\include\librealsense2;..\..\..\addons\ofxRealSense2\libs\librealsense2\include\librealsense2\h;..\..\..\addons\ofxRealSense2\libs\librealsense2\include\librealsense2\hpp;..\..\..\addons\ofxRealSense2\libs\librealsense2\lib;..\..\..\addons\ofxRealSense2\libs\librealsense2\lib\vs;..\..\..\addons\ofxRealSense2\libs\librealsense2\lib\vs\Win32;..\..\..\addons\ofxRealSense2\libs\librealsense2\lib\vs\x64;..\..\..\addons\ofxRealSense2\libs\libusb;..\..\..\addons\ofxRealSense2\libs\libusb\lib;..\..\..\addons\ofxRealSense2\src;..\..\..\addons\ofxRealSense2\src\ofxRealSense2</AdditionalIncludeDirectories>
+			<AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);src;..\..\..\addons\ofxGui\src;..\..\..\addons\ofxRealSense2\libs;..\..\..\addons\ofxRealSense2\libs\librealsense2;..\..\..\addons\ofxRealSense2\libs\librealsense2\export;..\..\..\addons\ofxRealSense2\libs\librealsense2\include;..\..\..\addons\ofxRealSense2\libs\librealsense2\include\librealsense2;..\..\..\addons\ofxRealSense2\libs\librealsense2\include\librealsense2\h;..\..\..\addons\ofxRealSense2\libs\librealsense2\include\librealsense2\hpp;..\..\..\addons\ofxRealSense2\libs\librealsense2\lib;..\..\..\addons\ofxRealSense2\libs\librealsense2\lib\vs;..\..\..\addons\ofxRealSense2\libs\librealsense2\lib\vs\Win32;..\..\..\addons\ofxRealSense2\libs\librealsense2\lib\vs\x64;..\..\..\addons\ofxRealSense2\libs\libusb;..\..\..\addons\ofxRealSense2\libs\libusb\lib;..\..\..\addons\ofxRealSense2\src;..\..\..\addons\ofxRealSense2\src\ofxRealSense2</AdditionalIncludeDirectories>
 			<CompileAs>CompileAsCpp</CompileAs>
 			<ObjectFileName>$(IntDir)</ObjectFileName>
 		</ClCompile>
@@ -120,7 +120,7 @@
 			<PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
 			<RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
 			<WarningLevel>Level3</WarningLevel>
-			<AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);src;..\..\..\addons\ofxRealSense2\libs;..\..\..\addons\ofxRealSense2\libs\librealsense2;..\..\..\addons\ofxRealSense2\libs\librealsense2\export;..\..\..\addons\ofxRealSense2\libs\librealsense2\include;..\..\..\addons\ofxRealSense2\libs\librealsense2\include\librealsense2;..\..\..\addons\ofxRealSense2\libs\librealsense2\include\librealsense2\h;..\..\..\addons\ofxRealSense2\libs\librealsense2\include\librealsense2\hpp;..\..\..\addons\ofxRealSense2\libs\librealsense2\lib;..\..\..\addons\ofxRealSense2\libs\librealsense2\lib\vs;..\..\..\addons\ofxRealSense2\libs\librealsense2\lib\vs\Win32;..\..\..\addons\ofxRealSense2\libs\librealsense2\lib\vs\x64;..\..\..\addons\ofxRealSense2\libs\libusb;..\..\..\addons\ofxRealSense2\libs\libusb\lib;..\..\..\addons\ofxRealSense2\src;..\..\..\addons\ofxRealSense2\src\ofxRealSense2</AdditionalIncludeDirectories>
+			<AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);src;..\..\..\addons\ofxGui\src;..\..\..\addons\ofxRealSense2\libs;..\..\..\addons\ofxRealSense2\libs\librealsense2;..\..\..\addons\ofxRealSense2\libs\librealsense2\export;..\..\..\addons\ofxRealSense2\libs\librealsense2\include;..\..\..\addons\ofxRealSense2\libs\librealsense2\include\librealsense2;..\..\..\addons\ofxRealSense2\libs\librealsense2\include\librealsense2\h;..\..\..\addons\ofxRealSense2\libs\librealsense2\include\librealsense2\hpp;..\..\..\addons\ofxRealSense2\libs\librealsense2\lib;..\..\..\addons\ofxRealSense2\libs\librealsense2\lib\vs;..\..\..\addons\ofxRealSense2\libs\librealsense2\lib\vs\Win32;..\..\..\addons\ofxRealSense2\libs\librealsense2\lib\vs\x64;..\..\..\addons\ofxRealSense2\libs\libusb;..\..\..\addons\ofxRealSense2\libs\libusb\lib;..\..\..\addons\ofxRealSense2\src;..\..\..\addons\ofxRealSense2\src\ofxRealSense2</AdditionalIncludeDirectories>
 			<CompileAs>CompileAsCpp</CompileAs>
 			<MultiProcessorCompilation>true</MultiProcessorCompilation>
 			<ObjectFileName>$(IntDir)</ObjectFileName>
@@ -140,7 +140,7 @@
 			<PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
 			<RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
 			<WarningLevel>Level3</WarningLevel>
-			<AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);src;..\..\..\addons\ofxRealSense2\libs;..\..\..\addons\ofxRealSense2\libs\librealsense2;..\..\..\addons\ofxRealSense2\libs\librealsense2\export;..\..\..\addons\ofxRealSense2\libs\librealsense2\include;..\..\..\addons\ofxRealSense2\libs\librealsense2\include\librealsense2;..\..\..\addons\ofxRealSense2\libs\librealsense2\include\librealsense2\h;..\..\..\addons\ofxRealSense2\libs\librealsense2\include\librealsense2\hpp;..\..\..\addons\ofxRealSense2\libs\librealsense2\lib;..\..\..\addons\ofxRealSense2\libs\librealsense2\lib\vs;..\..\..\addons\ofxRealSense2\libs\librealsense2\lib\vs\Win32;..\..\..\addons\ofxRealSense2\libs\librealsense2\lib\vs\x64;..\..\..\addons\ofxRealSense2\libs\libusb;..\..\..\addons\ofxRealSense2\libs\libusb\lib;..\..\..\addons\ofxRealSense2\src;..\..\..\addons\ofxRealSense2\src\ofxRealSense2</AdditionalIncludeDirectories>
+			<AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);src;..\..\..\addons\ofxGui\src;..\..\..\addons\ofxRealSense2\libs;..\..\..\addons\ofxRealSense2\libs\librealsense2;..\..\..\addons\ofxRealSense2\libs\librealsense2\export;..\..\..\addons\ofxRealSense2\libs\librealsense2\include;..\..\..\addons\ofxRealSense2\libs\librealsense2\include\librealsense2;..\..\..\addons\ofxRealSense2\libs\librealsense2\include\librealsense2\h;..\..\..\addons\ofxRealSense2\libs\librealsense2\include\librealsense2\hpp;..\..\..\addons\ofxRealSense2\libs\librealsense2\lib;..\..\..\addons\ofxRealSense2\libs\librealsense2\lib\vs;..\..\..\addons\ofxRealSense2\libs\librealsense2\lib\vs\Win32;..\..\..\addons\ofxRealSense2\libs\librealsense2\lib\vs\x64;..\..\..\addons\ofxRealSense2\libs\libusb;..\..\..\addons\ofxRealSense2\libs\libusb\lib;..\..\..\addons\ofxRealSense2\src;..\..\..\addons\ofxRealSense2\src\ofxRealSense2</AdditionalIncludeDirectories>
 			<CompileAs>CompileAsCpp</CompileAs>
 			<MultiProcessorCompilation>true</MultiProcessorCompilation>
 			<ObjectFileName>$(IntDir)</ObjectFileName>
@@ -163,7 +163,7 @@
 			<PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
 			<RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
 			<WarningLevel>Level3</WarningLevel>
-			<AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);src;..\..\..\addons\ofxRealSense2\libs;..\..\..\addons\ofxRealSense2\libs\librealsense2;..\..\..\addons\ofxRealSense2\libs\librealsense2\export;..\..\..\addons\ofxRealSense2\libs\librealsense2\include;..\..\..\addons\ofxRealSense2\libs\librealsense2\include\librealsense2;..\..\..\addons\ofxRealSense2\libs\librealsense2\include\librealsense2\h;..\..\..\addons\ofxRealSense2\libs\librealsense2\include\librealsense2\hpp;..\..\..\addons\ofxRealSense2\libs\librealsense2\lib;..\..\..\addons\ofxRealSense2\libs\librealsense2\lib\vs;..\..\..\addons\ofxRealSense2\libs\librealsense2\lib\vs\Win32;..\..\..\addons\ofxRealSense2\libs\librealsense2\lib\vs\x64;..\..\..\addons\ofxRealSense2\libs\libusb;..\..\..\addons\ofxRealSense2\libs\libusb\lib;..\..\..\addons\ofxRealSense2\src;..\..\..\addons\ofxRealSense2\src\ofxRealSense2</AdditionalIncludeDirectories>
+			<AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);src;..\..\..\addons\ofxGui\src;..\..\..\addons\ofxRealSense2\libs;..\..\..\addons\ofxRealSense2\libs\librealsense2;..\..\..\addons\ofxRealSense2\libs\librealsense2\export;..\..\..\addons\ofxRealSense2\libs\librealsense2\include;..\..\..\addons\ofxRealSense2\libs\librealsense2\include\librealsense2;..\..\..\addons\ofxRealSense2\libs\librealsense2\include\librealsense2\h;..\..\..\addons\ofxRealSense2\libs\librealsense2\include\librealsense2\hpp;..\..\..\addons\ofxRealSense2\libs\librealsense2\lib;..\..\..\addons\ofxRealSense2\libs\librealsense2\lib\vs;..\..\..\addons\ofxRealSense2\libs\librealsense2\lib\vs\Win32;..\..\..\addons\ofxRealSense2\libs\librealsense2\lib\vs\x64;..\..\..\addons\ofxRealSense2\libs\libusb;..\..\..\addons\ofxRealSense2\libs\libusb\lib;..\..\..\addons\ofxRealSense2\src;..\..\..\addons\ofxRealSense2\src\ofxRealSense2</AdditionalIncludeDirectories>
 			<CompileAs>CompileAsCpp</CompileAs>
 			<ObjectFileName>$(IntDir)</ObjectFileName>
 		</ClCompile>
@@ -182,11 +182,32 @@
 	<ItemGroup>
 		<ClCompile Include="src\main.cpp" />
 		<ClCompile Include="src\ofApp.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxGui\src\ofxBaseGui.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxGui\src\ofxButton.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxGui\src\ofxColorPicker.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxGui\src\ofxGuiGroup.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxGui\src\ofxInputField.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxGui\src\ofxLabel.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxGui\src\ofxPanel.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxGui\src\ofxSlider.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxGui\src\ofxSliderGroup.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxGui\src\ofxToggle.cpp" />
 		<ClCompile Include="..\..\..\addons\ofxRealSense2\src\ofxRealSense2\Context.cpp" />
 		<ClCompile Include="..\..\..\addons\ofxRealSense2\src\ofxRealSense2\Device.cpp" />
 	</ItemGroup>
 	<ItemGroup>
 		<ClInclude Include="src\ofApp.h" />
+		<ClInclude Include="..\..\..\addons\ofxGui\src\ofxBaseGui.h" />
+		<ClInclude Include="..\..\..\addons\ofxGui\src\ofxButton.h" />
+		<ClInclude Include="..\..\..\addons\ofxGui\src\ofxColorPicker.h" />
+		<ClInclude Include="..\..\..\addons\ofxGui\src\ofxGui.h" />
+		<ClInclude Include="..\..\..\addons\ofxGui\src\ofxGuiGroup.h" />
+		<ClInclude Include="..\..\..\addons\ofxGui\src\ofxInputField.h" />
+		<ClInclude Include="..\..\..\addons\ofxGui\src\ofxLabel.h" />
+		<ClInclude Include="..\..\..\addons\ofxGui\src\ofxPanel.h" />
+		<ClInclude Include="..\..\..\addons\ofxGui\src\ofxSlider.h" />
+		<ClInclude Include="..\..\..\addons\ofxGui\src\ofxSliderGroup.h" />
+		<ClInclude Include="..\..\..\addons\ofxGui\src\ofxToggle.h" />
 		<ClInclude Include="..\..\..\addons\ofxRealSense2\src\ofxRealSense2\Context.h" />
 		<ClInclude Include="..\..\..\addons\ofxRealSense2\src\ofxRealSense2\Device.h" />
 		<ClInclude Include="..\..\..\addons\ofxRealSense2\src\ofxRealSense2.h" />

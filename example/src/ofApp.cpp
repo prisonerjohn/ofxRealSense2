@@ -4,6 +4,8 @@ void ofApp::setup()
 {
     ofDisableArbTex();
 
+    this->guiPanel.setup("settings.xml");
+
     this->eventListeners.push(this->context.deviceAddedEvent.newListener([&](std::string serialNumber)
     {
         ofLogNotice(__FUNCTION__) << "Starting device " << serialNumber;
@@ -12,6 +14,7 @@ void ofApp::setup()
         device->enableDepth();
         device->enableColor();
         device->enablePoints();
+        this->guiPanel.add(device->params);
     }));
     this->context.setup(false);
  
@@ -61,6 +64,8 @@ void ofApp::draw()
     this->cam.end();
     
     ofDrawBitmapString(ofToString(ofGetFrameRate()), 10, 10);
+
+    this->guiPanel.draw();
 }
 
 void ofApp::keyPressed(int key)
