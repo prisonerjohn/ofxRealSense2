@@ -23,6 +23,117 @@ namespace ofxRealSense2
         this->waitForThread();
     }
 
+    void Device::startPipeline()
+    {
+        if (this->running)
+        {
+            this->stopPipeline();
+        }
+
+        auto serialNumber = std::string(this->device.get_info(RS2_CAMERA_INFO_SERIAL_NUMBER));
+        this->config.enable_device(serialNumber);
+        this->profile = this->pipeline.start(this->config);
+        this->setupParams();
+        this->startThread();
+        this->running = true;
+    }
+
+    void Device::stopPipeline()
+    {
+        if (!this->running) return;
+
+        this->stopThread();
+        this->pipeline.stop();
+        this->clearParams();
+        this->running = false;
+    }
+
+    bool Device::isRunning() const
+    {
+        return this->running;
+    }
+
+    void Device::setupParams()
+    {
+        rs2::sensor sensor = this->device.query_sensors()[0];
+        rs2::option_range orExposure = sensor.get_option_range(rs2_option::RS2_OPTION_EXPOSURE);
+        rs2::option_range orGain = sensor.get_option_range(rs2_option::RS2_OPTION_GAIN);
+        rs2::option_range orMinDist = this->colorizer.get_option_range(rs2_option::RS2_OPTION_MIN_DISTANCE);
+        rs2::option_range orMaxDist = this->colorizer.get_option_range(rs2_option::RS2_OPTION_MAX_DISTANCE);
+
+        this->autoExposure.set("Auto-exposure", true);
+        this->enableEmitter.set("Emitter", true);
+        this->irExposure.set("IR Exposure", orExposure.def, orExposure.min, orExposure.max);
+        this->depthMin.set("Min Depth", orMinDist.def, orMinDist.min, orMinDist.max);
+        this->depthMax.set("Max Depth", orMaxDist.def, orMaxDist.min, orMaxDist.max);
+
+        this->eventListeners.push(autoExposure.newListener([this](bool &)
+        {
+            if (!this->running) return;
+
+            auto sensor = this->pipeline.get_active_profile().get_device().first<rs2::depth_sensor>();
+            if (sensor.supports(RS2_OPTION_ENABLE_AUTO_EXPOSURE))
+            {
+                sensor.set_option(RS2_OPTION_ENABLE_AUTO_EXPOSURE, this->autoExposure ? 1.0f : 0.0f);
+            }
+        }));
+
+        this->eventListeners.push(enableEmitter.newListener([this](bool &)
+        {
+            if (!this->running) return;
+
+            auto sensor = this->pipeline.get_active_profile().get_device().first<rs2::depth_sensor>();
+            if (sensor.supports(RS2_OPTION_EMITTER_ENABLED))
+            {
+                sensor.set_option(RS2_OPTION_EMITTER_ENABLED, this->enableEmitter ? 1.0f : 0.0f);
+            }
+        }));
+
+        this->eventListeners.push(irExposure.newListener([this](int &)
+        {
+            if (!this->running) return;
+
+            auto sensor = this->pipeline.get_active_profile().get_device().first<rs2::depth_sensor>();
+            if (sensor.supports(rs2_option::RS2_OPTION_EXPOSURE))
+            {
+                sensor.set_option(rs2_option::RS2_OPTION_EXPOSURE, (float)this->irExposure);
+            }
+        }));
+
+        this->eventListeners.push(depthMin.newListener([this](float &)
+        {
+            if (!this->running) return;
+
+            this->colorizer.set_option(rs2_option::RS2_OPTION_HISTOGRAM_EQUALIZATION_ENABLED, 0);
+            if (this->colorizer.supports(rs2_option::RS2_OPTION_MIN_DISTANCE))
+            {
+                this->colorizer.set_option(rs2_option::RS2_OPTION_MIN_DISTANCE, this->depthMin);
+            }
+        }));
+
+        this->eventListeners.push(depthMax.newListener([this](float &)
+        {
+            if (!this->running) return;
+
+            this->colorizer.set_option(rs2_option::RS2_OPTION_HISTOGRAM_EQUALIZATION_ENABLED, 0);
+            if (this->colorizer.supports(rs2_option::RS2_OPTION_MAX_DISTANCE))
+            {
+                this->colorizer.set_option(rs2_option::RS2_OPTION_MAX_DISTANCE, this->depthMax);
+            }
+        }));
+
+        auto name = std::string(this->device.get_info(RS2_CAMERA_INFO_NAME));
+        auto serialNumber = std::string(this->device.get_info(RS2_CAMERA_INFO_SERIAL_NUMBER));
+
+        this->params.setName(name + " " + serialNumber);
+        this->params.add(this->autoExposure, this->enableEmitter, this->irExposure, this->depthMin, this->depthMax);
+    }
+
+    void Device::clearParams()
+    {
+        this->eventListeners.unsubscribeAll();
+    }
+
     void Device::enableDepth(int width, int height, int fps)
     {
         this->depthWidth = width;
@@ -89,39 +200,11 @@ namespace ofxRealSense2
         this->pointsEnabled = false;
     }
 
-    void Device::startPipeline()
-    {
-        if (this->running)
-        {
-            this->stopPipeline();
-        }
-
-        auto serialNumber = std::string(this->device.get_info(RS2_CAMERA_INFO_SERIAL_NUMBER));
-        this->config.enable_device(serialNumber);
-        this->profile = this->pipe.start(this->config);
-        this->startThread();
-        this->running = true;
-    }
-
-    void Device::stopPipeline()
-    {
-        if (!this->running) return;
-
-        this->stopThread();
-        this->pipe.stop();
-        this->running = false;
-    }
-
-    bool Device::isRunning() const
-    {
-        return this->running;
-    }
-
     void Device::threadedFunction()
     {
         while (isThreadRunning())
         {
-            rs2::frameset frameset = this->pipe.wait_for_frames();
+            rs2::frameset frameset = this->pipeline.wait_for_frames();
             if (this->depthEnabled)
             {
                 auto depthFrame = frameset.get_depth_frame();
@@ -260,7 +343,7 @@ namespace ofxRealSense2
 
     const rs2::pipeline & Device::getNativePipeline() const
     {
-        return this->pipe;
+        return this->pipeline;
     }
 
     const rs2::pipeline_profile & Device::getNativeProfile() const

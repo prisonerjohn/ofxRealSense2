@@ -2,6 +2,7 @@
 
 #include "librealsense2/rs.hpp"
 
+#include "ofParameter.h"
 #include "ofTexture.h"
 #include "ofThread.h"
 #include "ofVbo.h"
@@ -15,6 +16,13 @@ namespace ofxRealSense2
         Device(rs2::device device);
         ~Device();
 
+        void startPipeline();
+        void stopPipeline();
+        bool isRunning() const;
+
+        void setupParams();
+        void clearParams();
+
         void enableDepth(int width = 640, int height = 360, int fps = 30);
         void disableDepth();
 
@@ -26,10 +34,6 @@ namespace ofxRealSense2
 
         void enablePoints();
         void disablePoints();
-         
-        void startPipeline();
-        void stopPipeline();
-        bool isRunning() const;
 
         void threadedFunction() override;
         void update();
@@ -46,10 +50,18 @@ namespace ofxRealSense2
         const rs2::pipeline & getNativePipeline() const;
         const rs2::pipeline_profile & getNativeProfile() const;
 
+    public:
+        ofParameterGroup params;
+        ofParameter<bool> autoExposure;
+        ofParameter<bool> enableEmitter;
+        ofParameter<int> irExposure;
+        ofParameter<float> depthMin;
+        ofParameter<float> depthMax;
+
     private:
         rs2::device device;
         rs2::config config;
-        rs2::pipeline pipe;
+        rs2::pipeline pipeline;
         rs2::pipeline_profile profile;
         rs2::colorizer colorizer;
 
@@ -78,5 +90,7 @@ namespace ofxRealSense2
         rs2::points points;
         bool pointsEnabled;
         ofVbo pointsVbo;
+
+        ofEventListeners eventListeners;
     };
 }
