@@ -13,6 +13,8 @@ namespace ofxRealSense2
         , colorWidth(640), colorHeight(360)
         , colorEnabled(false)
         , running(false)
+        , disparityTransform(true)
+        , depthTransform(false)
     {
 
     }
@@ -55,78 +57,196 @@ namespace ofxRealSense2
 
     void Device::setupParams()
     {
-        rs2::sensor sensor = this->device.query_sensors()[0];
-        rs2::option_range orExposure = sensor.get_option_range(rs2_option::RS2_OPTION_EXPOSURE);
-        rs2::option_range orGain = sensor.get_option_range(rs2_option::RS2_OPTION_GAIN);
-        rs2::option_range orMinDist = this->colorizer.get_option_range(rs2_option::RS2_OPTION_MIN_DISTANCE);
-        rs2::option_range orMaxDist = this->colorizer.get_option_range(rs2_option::RS2_OPTION_MAX_DISTANCE);
-
-        this->autoExposure.set("Auto-exposure", true);
-        this->enableEmitter.set("Emitter", true);
-        this->irExposure.set("IR Exposure", orExposure.def, orExposure.min, orExposure.max);
-        this->depthMin.set("Min Depth", orMinDist.def, orMinDist.min, orMinDist.max);
-        this->depthMax.set("Max Depth", orMaxDist.def, orMaxDist.min, orMaxDist.max);
-
-        this->eventListeners.push(autoExposure.newListener([this](bool &)
-        {
-            if (!this->running) return;
-
-            auto sensor = this->pipeline.get_active_profile().get_device().first<rs2::depth_sensor>();
-            if (sensor.supports(RS2_OPTION_ENABLE_AUTO_EXPOSURE))
-            {
-                sensor.set_option(RS2_OPTION_ENABLE_AUTO_EXPOSURE, this->autoExposure ? 1.0f : 0.0f);
-            }
-        }));
-
-        this->eventListeners.push(enableEmitter.newListener([this](bool &)
-        {
-            if (!this->running) return;
-
-            auto sensor = this->pipeline.get_active_profile().get_device().first<rs2::depth_sensor>();
-            if (sensor.supports(RS2_OPTION_EMITTER_ENABLED))
-            {
-                sensor.set_option(RS2_OPTION_EMITTER_ENABLED, this->enableEmitter ? 1.0f : 0.0f);
-            }
-        }));
-
-        this->eventListeners.push(irExposure.newListener([this](int &)
-        {
-            if (!this->running) return;
-
-            auto sensor = this->pipeline.get_active_profile().get_device().first<rs2::depth_sensor>();
-            if (sensor.supports(rs2_option::RS2_OPTION_EXPOSURE))
-            {
-                sensor.set_option(rs2_option::RS2_OPTION_EXPOSURE, (float)this->irExposure);
-            }
-        }));
-
-        this->eventListeners.push(depthMin.newListener([this](float &)
-        {
-            if (!this->running) return;
-
-            this->colorizer.set_option(rs2_option::RS2_OPTION_HISTOGRAM_EQUALIZATION_ENABLED, 0);
-            if (this->colorizer.supports(rs2_option::RS2_OPTION_MIN_DISTANCE))
-            {
-                this->colorizer.set_option(rs2_option::RS2_OPTION_MIN_DISTANCE, this->depthMin);
-            }
-        }));
-
-        this->eventListeners.push(depthMax.newListener([this](float &)
-        {
-            if (!this->running) return;
-
-            this->colorizer.set_option(rs2_option::RS2_OPTION_HISTOGRAM_EQUALIZATION_ENABLED, 0);
-            if (this->colorizer.supports(rs2_option::RS2_OPTION_MAX_DISTANCE))
-            {
-                this->colorizer.set_option(rs2_option::RS2_OPTION_MAX_DISTANCE, this->depthMax);
-            }
-        }));
-
-        auto name = std::string(this->device.get_info(RS2_CAMERA_INFO_NAME));
-        auto serialNumber = std::string(this->device.get_info(RS2_CAMERA_INFO_SERIAL_NUMBER));
-
+        const auto name = std::string(this->device.get_info(RS2_CAMERA_INFO_NAME));
+        const auto serialNumber = std::string(this->device.get_info(RS2_CAMERA_INFO_SERIAL_NUMBER));
         this->params.setName(name + " " + serialNumber);
-        this->params.add(this->autoExposure, this->enableEmitter, this->irExposure, this->depthMin, this->depthMax);
+
+        // Sensor parameters.
+        {
+            rs2::sensor sensor = this->device.query_sensors()[0];
+            rs2::option_range orExposure = sensor.get_option_range(rs2_option::RS2_OPTION_EXPOSURE);
+            rs2::option_range orGain = sensor.get_option_range(rs2_option::RS2_OPTION_GAIN);
+
+            this->params.add
+            (
+                this->autoExposure.set("Auto-exposure", true),
+                this->emitterEnabled.set("Emitter", true),
+                this->irExposure.set("IR Exposure", orExposure.def, orExposure.min, orExposure.max)
+            );
+
+            this->eventListeners.push(this->autoExposure.newListener([this](bool &)
+            {
+                if (!this->running) return;
+
+                auto sensor = this->pipeline.get_active_profile().get_device().first<rs2::depth_sensor>();
+                if (sensor.supports(RS2_OPTION_ENABLE_AUTO_EXPOSURE))
+                {
+                    sensor.set_option(RS2_OPTION_ENABLE_AUTO_EXPOSURE, this->autoExposure ? 1.0f : 0.0f);
+                }
+            }));
+
+            this->eventListeners.push(this->emitterEnabled.newListener([this](bool &)
+            {
+                if (!this->running) return;
+
+                auto sensor = this->pipeline.get_active_profile().get_device().first<rs2::depth_sensor>();
+                if (sensor.supports(RS2_OPTION_EMITTER_ENABLED))
+                {
+                    sensor.set_option(RS2_OPTION_EMITTER_ENABLED, this->emitterEnabled ? 1.0f : 0.0f);
+                }
+            }));
+
+            this->eventListeners.push(this->irExposure.newListener([this](int &)
+            {
+                if (!this->running) return;
+
+                auto sensor = this->pipeline.get_active_profile().get_device().first<rs2::depth_sensor>();
+                if (sensor.supports(rs2_option::RS2_OPTION_EXPOSURE))
+                {
+                    sensor.set_option(rs2_option::RS2_OPTION_EXPOSURE, (float)this->irExposure);
+                }
+            }));
+        }
+
+        // Colorizer parameters.
+        {
+            rs2::option_range orMinDist = this->colorizer.get_option_range(rs2_option::RS2_OPTION_MIN_DISTANCE);
+            rs2::option_range orMaxDist = this->colorizer.get_option_range(rs2_option::RS2_OPTION_MAX_DISTANCE);
+
+            this->params.add
+            (
+                this->depthMin.set("Min Depth", orMinDist.def, orMinDist.min, orMinDist.max),
+                this->depthMax.set("Max Depth", orMaxDist.def, orMaxDist.min, orMaxDist.max)
+            );
+
+            this->eventListeners.push(this->depthMin.newListener([this](float &)
+            {
+                if (!this->running) return;
+
+                this->colorizer.set_option(rs2_option::RS2_OPTION_HISTOGRAM_EQUALIZATION_ENABLED, 0);
+                if (this->colorizer.supports(rs2_option::RS2_OPTION_MIN_DISTANCE))
+                {
+                    this->colorizer.set_option(rs2_option::RS2_OPTION_MIN_DISTANCE, this->depthMin);
+                }
+            }));
+
+            this->eventListeners.push(this->depthMax.newListener([this](float &)
+            {
+                if (!this->running) return;
+
+                this->colorizer.set_option(rs2_option::RS2_OPTION_HISTOGRAM_EQUALIZATION_ENABLED, 0);
+                if (this->colorizer.supports(rs2_option::RS2_OPTION_MAX_DISTANCE))
+                {
+                    this->colorizer.set_option(rs2_option::RS2_OPTION_MAX_DISTANCE, this->depthMax);
+                }
+            }));
+        }
+
+        // Decimation filter parameters.
+        {
+            rs2::option_range orMagnitude = this->decimationFilter.get_option_range(rs2_option::RS2_OPTION_FILTER_MAGNITUDE);
+
+            this->params.add
+            (
+                this->decimateEnabled.set("Decimate", false),
+                this->decimateMagnitude.set("Decimate Magnitude", orMagnitude.def, orMagnitude.min, orMagnitude.max)
+            );
+
+            this->eventListeners.push(this->decimateMagnitude.newListener([this](int &)
+            {
+                this->decimationFilter.set_option(RS2_OPTION_FILTER_MAGNITUDE, (float)this->decimateMagnitude);
+            }));
+        }
+
+        // Disparity transform parameters.
+        {
+            this->disparityTransformEnabled.set("Disparity Transform", false);
+
+            this->params.add(this->disparityTransformEnabled);
+        }
+
+        // Spatial filter parameters.
+        {
+            rs2::option_range orMagnitude = this->spatialFilter.get_option_range(rs2_option::RS2_OPTION_FILTER_MAGNITUDE);
+            rs2::option_range orSmoothAlpha = this->spatialFilter.get_option_range(rs2_option::RS2_OPTION_FILTER_SMOOTH_ALPHA);
+            rs2::option_range orSmoothDelta = this->spatialFilter.get_option_range(rs2_option::RS2_OPTION_FILTER_SMOOTH_DELTA);
+            rs2::option_range orHolesFill = this->spatialFilter.get_option_range(rs2_option::RS2_OPTION_HOLES_FILL);
+
+            this->params.add
+            (
+                this->spatialFilterEnabled.set("Spatial Filter", false),
+                this->spatialFilterMagnitude.set("Spatial Magnitude", orMagnitude.def, orMagnitude.min, orMagnitude.max),
+                this->spatialFilterSmoothAlpha.set("Spatial Smooth Alpha", orSmoothAlpha.def, orSmoothAlpha.min, orSmoothAlpha.max),
+                this->spatialFilterSmoothDelta.set("Spatial Smooth Delta", orSmoothDelta.def, orSmoothDelta.min, orSmoothDelta.max),
+                this->spatialFilterHoleFillingMode.set("Spatial Hole Filling Mode", orHolesFill.def, orHolesFill.min, orHolesFill.max)
+            );
+
+            this->eventListeners.push(this->spatialFilterMagnitude.newListener([this](int &)
+            {
+                this->spatialFilter.set_option(RS2_OPTION_FILTER_MAGNITUDE, (float)this->spatialFilterMagnitude);
+            }));
+
+            this->eventListeners.push(this->spatialFilterSmoothAlpha.newListener([this](float &)
+            {
+                this->spatialFilter.set_option(RS2_OPTION_FILTER_SMOOTH_ALPHA, this->spatialFilterSmoothAlpha);
+            }));
+
+            this->eventListeners.push(this->spatialFilterSmoothDelta.newListener([this](int &)
+            {
+                this->spatialFilter.set_option(RS2_OPTION_FILTER_SMOOTH_DELTA, (float)this->spatialFilterSmoothDelta);
+            }));
+
+            this->eventListeners.push(this->spatialFilterHoleFillingMode.newListener([this](int &)
+            {
+                this->spatialFilter.set_option(RS2_OPTION_HOLES_FILL, (float)this->spatialFilterHoleFillingMode);
+            }));
+        }
+
+        // Temporal filter parameters.
+        {
+            rs2::option_range orSmoothAlpha = this->temporalFilter.get_option_range(rs2_option::RS2_OPTION_FILTER_SMOOTH_ALPHA);
+            rs2::option_range orSmoothDelta = this->temporalFilter.get_option_range(rs2_option::RS2_OPTION_FILTER_SMOOTH_DELTA);
+            rs2::option_range orHolesFill = this->temporalFilter.get_option_range(rs2_option::RS2_OPTION_HOLES_FILL);
+
+            this->params.add
+            (
+                this->temporalFilterEnabled.set("Temporal Filter", false),
+                this->temporalFilterSmoothAlpha.set("Temporal Smooth Alpha", orSmoothAlpha.def, orSmoothAlpha.min, orSmoothAlpha.max),
+                this->temporalFilterSmoothDelta.set("Temporal Smooth Delta", orSmoothDelta.def, orSmoothDelta.min, orSmoothDelta.max),
+                this->temporalFilterPersistencyMode.set("Temporal Persistency Mode", orHolesFill.def, orHolesFill.min, orHolesFill.max)
+            );
+
+            this->eventListeners.push(this->temporalFilterSmoothAlpha.newListener([this](float &)
+            {
+                this->temporalFilter.set_option(RS2_OPTION_FILTER_SMOOTH_ALPHA, this->temporalFilterSmoothAlpha);
+            }));
+
+            this->eventListeners.push(this->temporalFilterSmoothDelta.newListener([this](int &)
+            {
+                this->temporalFilter.set_option(RS2_OPTION_FILTER_SMOOTH_DELTA, (float)this->temporalFilterSmoothDelta);
+            }));
+
+            this->eventListeners.push(this->temporalFilterPersistencyMode.newListener([this](int &)
+            {
+                this->temporalFilter.set_option(RS2_OPTION_HOLES_FILL, (float)this->temporalFilterPersistencyMode);
+            }));
+        }
+
+        // Hole filling parameters.
+        {
+            rs2::option_range orHolesFill = this->holeFillingFilter.get_option_range(rs2_option::RS2_OPTION_HOLES_FILL);
+
+            this->params.add
+            (
+                this->holeFillingEnabled.set("Hole Filling", false),
+                this->holeFillingMode.set("Hole Filling Mode", orHolesFill.def, orHolesFill.min, orHolesFill.max)
+            );
+
+            this->eventListeners.push(this->holeFillingMode.newListener([this](int &)
+            {
+                this->holeFillingFilter.set_option(RS2_OPTION_HOLES_FILL, (float)this->holeFillingMode);
+            }));
+        }
     }
 
     void Device::clearParams()
@@ -205,9 +325,40 @@ namespace ofxRealSense2
         while (isThreadRunning())
         {
             rs2::frameset frameset = this->pipeline.wait_for_frames();
+
             if (this->depthEnabled)
             {
                 auto depthFrame = frameset.get_depth_frame();
+
+                if (this->decimateEnabled)
+                {
+                    depthFrame = this->decimationFilter.process(depthFrame);
+                }
+
+                if (this->disparityTransformEnabled)
+                {
+                    depthFrame = this->disparityTransform.process(depthFrame);
+                }
+
+                if (this->spatialFilterEnabled)
+                {
+                    depthFrame = this->spatialFilter.process(depthFrame);
+                }
+
+                if (this->temporalFilterEnabled)
+                {
+                    depthFrame = this->temporalFilter.process(depthFrame);
+                }
+
+                if (this->holeFillingEnabled)
+                {
+                    depthFrame = this->holeFillingFilter.process(depthFrame);
+                }
+
+                if (this->disparityTransformEnabled)
+                {
+                    depthFrame = this->depthTransform.process(depthFrame);
+                }
 
                 if (this->pointsEnabled)
                 {
@@ -217,6 +368,7 @@ namespace ofxRealSense2
 
                 this->depthQueue.enqueue(depthFrame);
             }
+
             if (this->colorEnabled)
             {
                 auto colorFrame = frameset.get_color_frame();
@@ -229,6 +381,7 @@ namespace ofxRealSense2
 
                 this->colorQueue.enqueue(colorFrame);
             }
+
             if (this->infraredEnabled)
             {
                 auto infraredFrame = frameset.get_infrared_frame();
@@ -258,6 +411,7 @@ namespace ofxRealSense2
                 this->colorTex.loadData(colorData, this->colorWidth, this->colorHeight, GL_RGB);
             }
         }
+
         if (this->infraredEnabled)
         {
             rs2::frame frame;
@@ -270,6 +424,7 @@ namespace ofxRealSense2
                 this->infraredTex.loadData(infraredData, this->infraredWidth, this->infraredHeight, GL_LUMINANCE);
             }
         }
+
         if (this->depthEnabled)
         {
             rs2::frame frame;

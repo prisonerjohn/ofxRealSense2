@@ -52,11 +52,31 @@ namespace ofxRealSense2
 
     public:
         ofParameterGroup params;
+        
         ofParameter<bool> autoExposure;
-        ofParameter<bool> enableEmitter;
+        ofParameter<bool> emitterEnabled;
         ofParameter<int> irExposure;
         ofParameter<float> depthMin;
         ofParameter<float> depthMax;
+
+        ofParameter<bool> decimateEnabled;
+        ofParameter<int> decimateMagnitude;
+
+        ofParameter<bool> disparityTransformEnabled;
+
+        ofParameter<bool> spatialFilterEnabled;
+        ofParameter<int> spatialFilterMagnitude;
+        ofParameter<float> spatialFilterSmoothAlpha;
+        ofParameter<int> spatialFilterSmoothDelta;
+        ofParameter<int> spatialFilterHoleFillingMode;
+
+        ofParameter<bool> temporalFilterEnabled;
+        ofParameter<float> temporalFilterSmoothAlpha;
+        ofParameter<int> temporalFilterSmoothDelta;
+        ofParameter<int> temporalFilterPersistencyMode;
+
+        ofParameter<bool> holeFillingEnabled;
+        ofParameter<int> holeFillingMode;
 
     private:
         rs2::device device;
@@ -90,6 +110,13 @@ namespace ofxRealSense2
         rs2::points points;
         bool pointsEnabled;
         ofVbo pointsVbo;
+
+        rs2::decimation_filter decimationFilter;
+        rs2::disparity_transform disparityTransform;
+        rs2::disparity_transform depthTransform;
+        rs2::spatial_filter spatialFilter;
+        rs2::temporal_filter temporalFilter;
+        rs2::hole_filling_filter holeFillingFilter;
 
         ofEventListeners eventListeners;
     };
