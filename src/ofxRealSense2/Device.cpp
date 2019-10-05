@@ -8,6 +8,7 @@ namespace ofxRealSense2
         : pipeline(context)
         , device(device)
         , depthWidth(640), depthHeight(360)
+        , depthFrameRef(nullptr)
         , depthEnabled(true)
         , infraredWidth(640), infraredHeight(360)
         , infraredEnabled(false)
@@ -453,6 +454,9 @@ namespace ofxRealSense2
                 this->depthPix.setFromPixels(normalizedDepthData, this->depthWidth, this->depthHeight, OF_IMAGE_COLOR);
                 this->depthTex.loadData(normalizedDepthData, this->depthWidth, this->depthHeight, GL_RGB);
 
+                // Save a reference to the depth frame to 
+                this->depthFrameRef = std::make_shared<rs2::depth_frame>(depthFrame);
+
                 if (this->pointsEnabled)
                 {
                     // Upload point data to the vbo.
@@ -522,6 +526,15 @@ namespace ofxRealSense2
     const size_t Device::getNumPoints() const
     {
         return this->points.size();
+    }
+
+    float Device::getDistance(int x, int y) const
+    {
+        if (this->depthFrameRef)
+        {
+            return this->depthFrameRef->get_distance(x, y);
+        }
+        return 0.0f;
     }
 
     const rs2::device& Device::getNativeDevice() const

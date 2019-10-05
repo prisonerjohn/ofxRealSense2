@@ -45,8 +45,16 @@ void ofApp::draw()
     auto it = this->context.getDevices().begin();
     while (it != this->context.getDevices().end())
     {
-        it->second->getDepthTex().draw(640 * i, 0);
-        it->second->getColorTex().draw(640 * i, 360);
+        int x = 640 * i;
+        it->second->getDepthTex().draw(x, 0);
+        it->second->getColorTex().draw(x, 360);
+
+        if (ofInRange(ofGetMouseX(), x, x + 640) &&
+            ofInRange(ofGetMouseY(), 0, 360))
+        {
+            float distance = it->second->getDistance(ofMap(ofGetMouseX(), x, x + 640, 0, 640), ofGetMouseY());
+            ofDrawBitmapStringHighlight(ofToString(distance, 3) + " m", ofGetMouseX(), ofGetMouseY());
+        }
 
         ++it;
         ++i;
@@ -68,7 +76,7 @@ void ofApp::draw()
     }
     ofPopMatrix();
     this->cam.end();
-    
+
     ofDrawBitmapString(ofToString(ofGetFrameRate()), 10, 10);
 
     this->guiPanel.draw();

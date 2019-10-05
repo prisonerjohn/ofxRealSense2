@@ -52,6 +52,8 @@ namespace ofxRealSense2
         const ofVbo& getPointsVbo() const;
         const size_t getNumPoints() const;
 
+        float getDistance(int x, int y) const;
+
         const rs2::device& getNativeDevice() const;
         const rs2::pipeline& getNativePipeline() const;
         const rs2::pipeline_profile& getNativeProfile() const;
@@ -97,6 +99,7 @@ namespace ofxRealSense2
         int depthHeight;
         bool depthEnabled;
         rs2::frame_queue depthQueue;
+        std::shared_ptr<rs2::depth_frame> depthFrameRef;
         ofPixels depthPix;
         ofShortPixels rawDepthPix;
         ofTexture depthTex;
