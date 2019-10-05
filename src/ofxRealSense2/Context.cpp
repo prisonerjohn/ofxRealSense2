@@ -18,8 +18,10 @@ namespace ofxRealSense2
     {
         this->autoStart = autoStart;
 
+        this->context = std::make_shared<rs2::context>();
+
         // Register callback for tracking which devices are currently connected.
-        this->context.set_devices_changed_callback([&](rs2::event_information & info)
+        this->context->set_devices_changed_callback([&](rs2::event_information & info)
         {
             this->removeDevices(info);
             for (auto && dev : info.get_new_devices())
@@ -29,7 +31,7 @@ namespace ofxRealSense2
         });
 
         // Populate initial device list.
-        for (auto && dev : this->context.query_devices())
+        for (auto && dev : this->context->query_devices())
         {
             this->addDevice(dev);
         }
@@ -44,6 +46,8 @@ namespace ofxRealSense2
             ++it;
         }
         this->devices.clear();
+
+        this->context.reset();
     }
 
     void Context::update()
@@ -80,7 +84,7 @@ namespace ofxRealSense2
 
         // Add the device.
         ofLogNotice(__FUNCTION__) << "Add device " << serialNumber;
-        this->devices.emplace(serialNumber, std::make_shared<Device>(device));
+        this->devices.emplace(serialNumber, std::make_shared<Device>(*this->context, device));
         this->deviceAddedEvent.notify(serialNumber);
 
         if (this->autoStart)
@@ -125,7 +129,7 @@ namespace ofxRealSense2
         return this->devices.at(serialNumber);
     }
 
-    const rs2::context & Context::getNativeContext() const
+    const std::shared_ptr<rs2::context> Context::getNativeContext() const
     {
         return this->context;
     }

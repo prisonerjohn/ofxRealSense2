@@ -16,9 +16,15 @@ void ofApp::setup()
         device->enablePoints();
         this->guiPanel.add(device->params);
     }));
-    this->context.setup(false);
- 
-    //this->context.setup();
+
+    try
+    {
+        this->context.setup(false);
+    }
+    catch (std::exception& e)
+    {
+        ofLogFatalError(__FUNCTION__) << e.what();
+    }
 }
 
 void ofApp::exit()
