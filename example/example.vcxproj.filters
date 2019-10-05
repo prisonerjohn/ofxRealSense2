@@ -182,10 +182,16 @@
 		<ClInclude Include="..\..\..\addons\ofxRealSense2\libs\librealsense2\include\librealsense2\hpp\rs_device.hpp">
 			<Filter>addons\ofxRealSense2\libs\librealsense2\include\librealsense2\hpp</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxRealSense2\libs\librealsense2\include\librealsense2\hpp\rs_export.hpp">
+			<Filter>addons\ofxRealSense2\libs\librealsense2\include\librealsense2\hpp</Filter>
+		</ClInclude>
 		<ClInclude Include="..\..\..\addons\ofxRealSense2\libs\librealsense2\include\librealsense2\hpp\rs_frame.hpp">
 			<Filter>addons\ofxRealSense2\libs\librealsense2\include\librealsense2\hpp</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\..\addons\ofxRealSense2\libs\librealsense2\include\librealsense2\hpp\rs_internal.hpp">
+			<Filter>addons\ofxRealSense2\libs\librealsense2\include\librealsense2\hpp</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxRealSense2\libs\librealsense2\include\librealsense2\hpp\rs_options.hpp">
 			<Filter>addons\ofxRealSense2\libs\librealsense2\include\librealsense2\hpp</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\..\addons\ofxRealSense2\libs\librealsense2\include\librealsense2\hpp\rs_pipeline.hpp">
