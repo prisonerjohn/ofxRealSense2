@@ -28,7 +28,7 @@ namespace ofxRealSense2
         ofEvent<std::string> deviceRemovedEvent;
 
     private:
-        void addDevice(rs2::device device);
+        void addDevice(rs2::device& device);
         void removeDevices(const rs2::event_information & info);
 
     private:
