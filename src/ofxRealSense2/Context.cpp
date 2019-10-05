@@ -92,9 +92,9 @@ namespace ofxRealSense2
             // Start the device.
             ofLogNotice(__FUNCTION__) << "Start device " << serialNumber;
             auto device = this->devices.at(serialNumber);
-            device->startPipeline();
             device->enableDepth();
             device->enableColor();
+            device->startPipeline();
         }
     }
 

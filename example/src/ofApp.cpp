@@ -10,10 +10,10 @@ void ofApp::setup()
     {
         ofLogNotice(__FUNCTION__) << "Starting device " << serialNumber;
         auto device = this->context.getDevice(serialNumber);
-        device->startPipeline();
         device->enableDepth();
         device->enableColor();
         device->enablePoints();
+        device->startPipeline();
         this->guiPanel.add(device->params);
     }));
 
