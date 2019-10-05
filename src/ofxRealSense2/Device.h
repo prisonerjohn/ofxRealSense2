@@ -3,6 +3,7 @@
 #include "librealsense2/rs.hpp"
 
 #include "ofParameter.h"
+#include "ofPixels.h"
 #include "ofTexture.h"
 #include "ofThread.h"
 #include "ofVbo.h"
@@ -38,17 +39,22 @@ namespace ofxRealSense2
         void threadedFunction() override;
         void update();
 
-        const ofTexture & getDepthTex() const;
-        const ofTexture & getRawDepthTex() const;
-        const ofTexture & getInfraredTex() const;
-        const ofTexture & getColorTex() const;
+        const ofPixels& getDepthPix() const;
+        const ofShortPixels& getRawDepthPix() const;
+        const ofPixels& getInfraredPix() const;
+        const ofPixels& getColorPix() const;
 
-        const ofVbo & getPointsVbo() const;
+        const ofTexture& getDepthTex() const;
+        const ofTexture& getRawDepthTex() const;
+        const ofTexture& getInfraredTex() const;
+        const ofTexture& getColorTex() const;
+
+        const ofVbo& getPointsVbo() const;
         const size_t getNumPoints() const;
 
-        const rs2::device & getNativeDevice() const;
-        const rs2::pipeline & getNativePipeline() const;
-        const rs2::pipeline_profile & getNativeProfile() const;
+        const rs2::device& getNativeDevice() const;
+        const rs2::pipeline& getNativePipeline() const;
+        const rs2::pipeline_profile& getNativeProfile() const;
 
     public:
         ofParameterGroup params;
@@ -91,6 +97,8 @@ namespace ofxRealSense2
         int depthHeight;
         bool depthEnabled;
         rs2::frame_queue depthQueue;
+        ofPixels depthPix;
+        ofShortPixels rawDepthPix;
         ofTexture depthTex;
         ofTexture rawDepthTex;
    
@@ -98,12 +106,14 @@ namespace ofxRealSense2
         int infraredHeight;
         bool infraredEnabled;
         rs2::frame_queue infraredQueue;
+        ofPixels infraredPix;
         ofTexture infraredTex;
 
         int colorWidth;
         int colorHeight;
         bool colorEnabled;
         rs2::frame_queue colorQueue;
+        ofPixels colorPix;
         ofTexture colorTex;
 
         rs2::pointcloud pointCloud;

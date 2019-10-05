@@ -260,7 +260,9 @@ namespace ofxRealSense2
         this->depthWidth = width;
         this->depthHeight = height;
         this->config.enable_stream(RS2_STREAM_DEPTH, this->depthWidth, this->depthHeight, RS2_FORMAT_Z16, fps);
+        this->depthPix.allocate(this->depthWidth, this->depthHeight, OF_IMAGE_COLOR);
         this->depthTex.allocate(this->depthWidth, this->depthHeight, GL_RGB);
+        this->rawDepthPix.allocate(this->depthWidth, this->depthHeight, OF_IMAGE_GRAYSCALE);
         this->rawDepthTex.allocate(this->depthWidth, this->depthHeight, GL_LUMINANCE16);
         this->colorizer.set_option(RS2_OPTION_COLOR_SCHEME, 2);
         this->depthEnabled = true;
@@ -269,7 +271,9 @@ namespace ofxRealSense2
     void Device::disableDepth()
     {
         this->config.disable_stream(RS2_STREAM_DEPTH);
+        this->depthPix.clear();
         this->depthTex.clear();
+        this->rawDepthPix.clear();
         this->rawDepthTex.clear();
         this->depthEnabled = false;
     }
@@ -279,6 +283,7 @@ namespace ofxRealSense2
         this->infraredWidth = width;
         this->infraredHeight = height;
         this->config.enable_stream(RS2_STREAM_INFRARED, this->infraredWidth, this->infraredHeight, RS2_FORMAT_Y8, fps);
+        this->infraredPix.allocate(this->infraredWidth, this->infraredHeight, OF_IMAGE_GRAYSCALE);
         this->infraredTex.allocate(this->infraredWidth, this->infraredHeight, GL_LUMINANCE);
         this->infraredEnabled = true;
     }
@@ -286,6 +291,7 @@ namespace ofxRealSense2
     void Device::disableInfrared()
     {
         this->config.disable_stream(RS2_STREAM_INFRARED);
+        this->infraredPix.clear();
         this->infraredTex.clear();
         this->infraredEnabled = false;
     }
@@ -295,6 +301,7 @@ namespace ofxRealSense2
         this->colorWidth = width;
         this->colorHeight = height;
         this->config.enable_stream(RS2_STREAM_COLOR, this->colorWidth, this->colorHeight, RS2_FORMAT_RGB8, fps);
+        this->colorPix.allocate(this->colorWidth, this->colorHeight, OF_IMAGE_COLOR);
         this->colorTex.allocate(this->colorWidth, this->colorHeight, GL_RGB);
         this->colorEnabled = true;
     }
@@ -302,6 +309,7 @@ namespace ofxRealSense2
     void Device::disableColor()
     {
         this->config.disable_stream(RS2_STREAM_COLOR);
+        this->colorPix.clear();
         this->colorTex.clear();
         this->colorEnabled = false;
     }
@@ -409,6 +417,7 @@ namespace ofxRealSense2
                 auto colorData = (uint8_t *)videoFrame.get_data();
                 this->colorWidth = videoFrame.get_width();
                 this->colorHeight = videoFrame.get_height();
+                this->colorPix.setFromPixels(colorData, this->colorWidth, this->colorHeight, OF_IMAGE_COLOR);
                 this->colorTex.loadData(colorData, this->colorWidth, this->colorHeight, GL_RGB);
             }
         }
@@ -422,6 +431,7 @@ namespace ofxRealSense2
                 auto infraredData = (uint8_t *)videoFrame.get_data();
                 this->infraredWidth = videoFrame.get_width();
                 this->infraredHeight = videoFrame.get_height();
+                this->infraredPix.setFromPixels(infraredData, this->infraredWidth, this->infraredHeight, OF_IMAGE_GRAYSCALE);
                 this->infraredTex.loadData(infraredData, this->infraredWidth, this->infraredHeight, GL_LUMINANCE);
             }
         }
@@ -435,10 +445,12 @@ namespace ofxRealSense2
                 auto rawDepthData = (uint16_t *)depthFrame.get_data();
                 this->depthWidth = depthFrame.get_width();
                 this->depthHeight = depthFrame.get_height();
+                this->rawDepthPix.setFromPixels(rawDepthData, this->depthWidth, this->depthHeight, OF_IMAGE_GRAYSCALE);
                 this->rawDepthTex.loadData(rawDepthData, this->depthWidth, this->depthHeight, GL_LUMINANCE);
 
                 auto normalizedDepthFrame = this->colorizer.process(depthFrame);
                 auto normalizedDepthData = (uint8_t *)normalizedDepthFrame.get_data();
+                this->depthPix.setFromPixels(normalizedDepthData, this->depthWidth, this->depthHeight, OF_IMAGE_COLOR);
                 this->depthTex.loadData(normalizedDepthData, this->depthWidth, this->depthHeight, GL_RGB);
 
                 if (this->pointsEnabled)
@@ -462,27 +474,47 @@ namespace ofxRealSense2
         }
     }
 
-    const ofTexture & Device::getDepthTex() const
+    const ofPixels& Device::getDepthPix() const
+    {
+        return this->depthPix;
+    }
+
+    const ofShortPixels& Device::getRawDepthPix() const
+    {
+        return this->rawDepthPix;
+    }
+
+    const ofPixels& Device::getInfraredPix() const
+    {
+        return this->infraredPix;
+    }
+
+    const ofPixels& Device::getColorPix() const
+    {
+        return this->colorPix;
+    }
+
+    const ofTexture& Device::getDepthTex() const
     {
         return this->depthTex;
     }
 
-    const ofTexture & Device::getRawDepthTex() const
+    const ofTexture& Device::getRawDepthTex() const
     {
         return this->rawDepthTex;
     }
 
-    const ofTexture & Device::getInfraredTex() const
+    const ofTexture& Device::getInfraredTex() const
     {
         return this->infraredTex;
     }
 
-    const ofTexture & Device::getColorTex() const
+    const ofTexture& Device::getColorTex() const
     {
         return this->colorTex;
     }
 
-    const ofVbo & Device::getPointsVbo() const
+    const ofVbo& Device::getPointsVbo() const
     {
         return this->pointsVbo;
     }
@@ -492,17 +524,17 @@ namespace ofxRealSense2
         return this->points.size();
     }
 
-    const rs2::device & Device::getNativeDevice() const
+    const rs2::device& Device::getNativeDevice() const
     {
         return this->device;
     }
 
-    const rs2::pipeline & Device::getNativePipeline() const
+    const rs2::pipeline& Device::getNativePipeline() const
     {
         return this->pipeline;
     }
 
-    const rs2::pipeline_profile & Device::getNativeProfile() const
+    const rs2::pipeline_profile& Device::getNativeProfile() const
     {
         return this->profile;
     }
