@@ -4,8 +4,9 @@
 
 namespace ofxRealSense2
 {
-    Device::Device(rs2::device device)
-        : device(device)
+    Device::Device(rs2::context& context, const rs2::device& device)
+        : pipeline(context)
+        , device(device)
         , depthWidth(640), depthHeight(360)
         , depthEnabled(true)
         , infraredWidth(640), infraredHeight(360)

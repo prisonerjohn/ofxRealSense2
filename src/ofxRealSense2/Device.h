@@ -13,7 +13,7 @@ namespace ofxRealSense2
         : ofThread
     {
     public:
-        Device(rs2::device device);
+        Device(rs2::context& context, const rs2::device& device);
         ~Device();
 
         void startPipeline();
