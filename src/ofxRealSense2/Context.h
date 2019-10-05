@@ -1,8 +1,6 @@
 #pragma once
 
-#include <string>
-#include <map>
-#include <mutex>
+#include "ofConstants.h"
 #include "ofEvent.h"
 #include "librealsense2/rs.hpp"
 #include "Device.h"
