@@ -550,6 +550,28 @@ namespace ofxRealSense2
         return 0.0f;
     }
 
+    ofDefaultVertexType Device::getWorldPosition(int x, int y) const
+    {
+        int idx = y * this->getDepthTex().getWidth() + x;
+        if (idx < this->points.size())
+        {
+            auto vertices = this->points.get_vertices();
+            return ofDefaultVertexType(vertices[idx].x, vertices[idx].y, vertices[idx].z);
+        }
+        return ofDefaultVertexType();
+    }
+
+    ofDefaultTexCoordType Device::getTexCoord(int x, int y) const
+    {
+        int idx = y * this->getDepthTex().getWidth() + x;
+        if (idx < this->points.size())
+        {
+            auto texCoords = this->points.get_texture_coordinates();
+            return ofDefaultTexCoordType(texCoords[idx].u, texCoords[idx].v);
+        }
+        return ofDefaultTexCoordType();
+    }
+
     const rs2::device& Device::getNativeDevice() const
     {
         return this->device;

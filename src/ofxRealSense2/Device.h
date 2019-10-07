@@ -60,6 +60,8 @@ namespace ofxRealSense2
         const size_t getNumPoints() const;
 
         float getDistance(int x, int y) const;
+        ofDefaultVertexType getWorldPosition(int x, int y) const;
+        ofDefaultTexCoordType getTexCoord(int x, int y) const;
 
         const rs2::device& getNativeDevice() const;
         const rs2::pipeline& getNativePipeline() const;
