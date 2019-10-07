@@ -129,6 +129,27 @@ namespace ofxRealSense2
         return this->devices.at(serialNumber);
     }
 
+    std::shared_ptr<Device> Context::getDevice(int idx) const
+    {
+        if (this->devices.size() > idx)
+        {
+            auto it = this->devices.begin();
+            int i = 0;
+            while (i < idx)
+            {
+                ++it;
+                ++i;
+            }
+            return (*it).second;
+        }
+        return nullptr;
+    }
+
+    size_t Context::getNumDevices() const
+    {
+        return this->devices.size();
+    }
+
     const std::shared_ptr<rs2::context> Context::getNativeContext() const
     {
         return this->context;

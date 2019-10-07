@@ -17,9 +17,11 @@ namespace ofxRealSense2
         void clear();
 
         void update();
-        
+
         const std::map<std::string, std::shared_ptr<Device>> & getDevices() const;
         std::shared_ptr<Device> getDevice(const std::string & serialNumber) const;
+        std::shared_ptr<Device> getDevice(int idx = 0) const;
+        size_t getNumDevices() const;
 
         const std::shared_ptr<rs2::context> getNativeContext() const;
 
