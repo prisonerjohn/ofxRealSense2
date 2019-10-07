@@ -6,7 +6,7 @@
 #include "ofPixels.h"
 #include "ofTexture.h"
 #include "ofThread.h"
-#include "ofVbo.h"
+#include "ofVboMesh.h"
 
 namespace ofxRealSense2
 {
@@ -56,7 +56,7 @@ namespace ofxRealSense2
         const ofTexture& getInfraredTex() const;
         const ofTexture& getColorTex() const;
 
-        const ofVbo& getPointsVbo() const;
+        const ofVboMesh& getPointsMesh() const;
         const size_t getNumPoints() const;
 
         float getDistance(int x, int y) const;
@@ -135,7 +135,7 @@ namespace ofxRealSense2
         rs2::pointcloud pointCloud;
         rs2::points points;
         bool pointsEnabled;
-        ofVbo pointsVbo;
+        ofVboMesh pointsMesh;
 
         rs2::decimation_filter decimationFilter;
         rs2::disparity_transform disparityTransform;

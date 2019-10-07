@@ -68,7 +68,7 @@ void ofApp::draw()
         while (it != this->context.getDevices().end())
         {
             it->second->getColorTex().bind();
-            it->second->getPointsVbo().draw(GL_POINTS, 0, it->second->getNumPoints());
+            it->second->getPointsMesh().draw();
             it->second->getColorTex().unbind();
 
             ++it;

@@ -333,7 +333,7 @@ namespace ofxRealSense2
 
     void Device::disablePoints()
     {
-        this->pointsVbo.clear();
+        this->pointsMesh.clear();
         this->pointsEnabled = false;
     }
 
@@ -482,16 +482,10 @@ namespace ofxRealSense2
                     auto vertices = this->points.get_vertices();
                     auto texCoords = this->points.get_texture_coordinates();
                     ofLogVerbose(__FUNCTION__) << "Uploading " << this->points.size() << " points";
-                    if (this->pointsVbo.getNumVertices() < this->points.size())
-                    {
-                        this->pointsVbo.setVertexData((const float *)vertices, 3, this->points.size(), GL_STREAM_DRAW);
-                        this->pointsVbo.setTexCoordData((const float *)texCoords, this->points.size(), GL_STREAM_DRAW);
-                    }
-                    else
-                    {
-                        this->pointsVbo.updateVertexData((const float *)vertices, this->points.size());
-                        this->pointsVbo.updateTexCoordData((const float *)texCoords, this->points.size());
-                    }
+                    this->pointsMesh.setUsage(GL_STREAM_DRAW);
+                    this->pointsMesh.setMode(OF_PRIMITIVE_POINTS);
+                    this->pointsMesh.getVertices().assign(reinterpret_cast<const ofDefaultVertexType*>(vertices), reinterpret_cast<const ofDefaultVertexType*>(vertices + this->points.size()));
+                    this->pointsMesh.getTexCoords().assign(reinterpret_cast<const ofDefaultTexCoordType*>(texCoords), reinterpret_cast<const ofDefaultTexCoordType*>(texCoords + this->points.size()));
                 }
             }
         }
@@ -537,9 +531,9 @@ namespace ofxRealSense2
         return this->colorTex;
     }
 
-    const ofVbo& Device::getPointsVbo() const
+    const ofVboMesh& Device::getPointsMesh() const
     {
-        return this->pointsVbo;
+        return this->pointsMesh;
     }
 
     const size_t Device::getNumPoints() const
