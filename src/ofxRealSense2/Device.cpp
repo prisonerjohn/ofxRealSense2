@@ -14,6 +14,8 @@ namespace ofxRealSense2
         , infraredEnabled(false)
         , colorWidth(640), colorHeight(360)
         , colorEnabled(false)
+        , alignToDepth(RS2_STREAM_DEPTH)
+        , alignToColor(RS2_STREAM_COLOR)
         , running(false)
         , disparityTransform(true)
         , depthTransform(false)
@@ -65,6 +67,11 @@ namespace ofxRealSense2
 
         // Sensor parameters.
         {
+            this->params.add
+            (
+                this->alignMode.set("Align", Align::None, Align::None, Align::Color)
+            );
+
             rs2::sensor sensor = this->device.query_sensors()[0];
             rs2::option_range orExposure = sensor.get_option_range(rs2_option::RS2_OPTION_EXPOSURE);
             rs2::option_range orGain = sensor.get_option_range(rs2_option::RS2_OPTION_GAIN);
@@ -336,6 +343,18 @@ namespace ofxRealSense2
         {
             rs2::frameset frameset = this->pipeline.wait_for_frames();
 
+            //const auto align = static_cast<Align>(this->alignMode.get());
+            if (this->alignMode.get() == Align::Depth)
+            {
+                // Align all frames to depth viewport.
+                frameset = this->alignToDepth.process(frameset);
+            }
+            else if (this->alignMode.get() == Align::Color)
+            {
+                // Align all frames to color viewport.
+                frameset = this->alignToColor.process(frameset);
+            }
+
             if (this->depthEnabled)
             {
                 auto depthFrame = frameset.get_depth_frame();
@@ -374,6 +393,12 @@ namespace ofxRealSense2
                 {
                     // Generate the pointcloud and texture mappings.
                     this->points = this->pointCloud.calculate(depthFrame);
+
+                    if (!this->colorEnabled || this->alignMode == Align::Depth)
+                    {
+                        // Map point cloud to depth frame.
+                        this->pointCloud.map_to(depthFrame);
+                    }
                 }
 
                 this->depthQueue.enqueue(depthFrame);
@@ -383,7 +408,7 @@ namespace ofxRealSense2
             {
                 auto colorFrame = frameset.get_color_frame();
 
-                if (this->pointsEnabled)
+                if (this->pointsEnabled && this->alignMode != Align::Depth)
                 {
                     // Map point cloud to color frame.
                     this->pointCloud.map_to(colorFrame);
@@ -395,12 +420,6 @@ namespace ofxRealSense2
             if (this->infraredEnabled)
             {
                 auto infraredFrame = frameset.get_infrared_frame();
-
-                if (this->pointsEnabled && !this->colorEnabled)
-                {
-                    // Map point cloud to infrared frame.
-                    this->pointCloud.map_to(infraredFrame);
-                }
 
                 this->infraredQueue.enqueue(infraredFrame);
             }

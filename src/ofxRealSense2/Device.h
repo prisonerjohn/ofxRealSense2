@@ -14,6 +14,13 @@ namespace ofxRealSense2
         : ofThread
     {
     public:
+        enum Align
+        {
+            None,
+            Depth,
+            Color
+        };
+    public:
         Device(rs2::context& context, const rs2::device& device);
         ~Device();
 
@@ -60,10 +67,13 @@ namespace ofxRealSense2
 
     public:
         ofParameterGroup params;
-        
+
+        ofParameter<int> alignMode;
+
         ofParameter<bool> autoExposure;
         ofParameter<bool> emitterEnabled;
         ofParameter<int> irExposure;
+
         ofParameter<float> depthMin;
         ofParameter<float> depthMax;
 
@@ -118,6 +128,9 @@ namespace ofxRealSense2
         rs2::frame_queue colorQueue;
         ofPixels colorPix;
         ofTexture colorTex;
+
+        rs2::align alignToDepth;
+        rs2::align alignToColor;
 
         rs2::pointcloud pointCloud;
         rs2::points points;
