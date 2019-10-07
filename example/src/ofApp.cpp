@@ -61,8 +61,9 @@ void ofApp::draw()
     }
 
     this->cam.begin();
+    ofEnableDepthTest();
     ofPushMatrix();
-    ofScale(10);
+    ofScale(100);
     {
         auto it = this->context.getDevices().begin();
         while (it != this->context.getDevices().end())
@@ -75,6 +76,7 @@ void ofApp::draw()
         }
     }
     ofPopMatrix();
+    ofDisableDepthTest();
     this->cam.end();
 
     ofDrawBitmapString(ofToString(ofGetFrameRate()), 10, 10);
