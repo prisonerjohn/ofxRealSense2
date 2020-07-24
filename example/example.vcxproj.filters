@@ -113,6 +113,9 @@
 		<ClInclude Include="..\..\..\addons\ofxGui\src\ofxGuiGroup.h">
 			<Filter>addons\ofxGui\src</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxGui\src\ofxGuiUtils.h">
+			<Filter>addons\ofxGui\src</Filter>
+		</ClInclude>
 		<ClInclude Include="..\..\..\addons\ofxGui\src\ofxInputField.h">
 			<Filter>addons\ofxGui\src</Filter>
 		</ClInclude>

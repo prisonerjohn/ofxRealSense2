@@ -202,6 +202,7 @@
 		<ClInclude Include="..\..\..\addons\ofxGui\src\ofxColorPicker.h" />
 		<ClInclude Include="..\..\..\addons\ofxGui\src\ofxGui.h" />
 		<ClInclude Include="..\..\..\addons\ofxGui\src\ofxGuiGroup.h" />
+		<ClInclude Include="..\..\..\addons\ofxGui\src\ofxGuiUtils.h" />
 		<ClInclude Include="..\..\..\addons\ofxGui\src\ofxInputField.h" />
 		<ClInclude Include="..\..\..\addons\ofxGui\src\ofxLabel.h" />
 		<ClInclude Include="..\..\..\addons\ofxGui\src\ofxPanel.h" />
