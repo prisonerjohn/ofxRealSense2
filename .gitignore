@@ -1,3 +1,6 @@
+libs/librealsense2/lib/osx/librealsense2.a
+libs/librealsense2/lib/rpi/librealsense2.so
+
 #########################
 # openFrameworks patterns
 #########################
