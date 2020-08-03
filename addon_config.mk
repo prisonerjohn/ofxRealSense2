@@ -74,9 +74,17 @@ linux64:
 	# ADDON_LIBS += libs/opencv/lib/linuxarmv6l/libopencv_legacy.a
 	# ADDON_LIBS += libs/opencv/lib/linuxarmv6l/libopencv_calib3d.a
 	# ...
+	ADDON_LIBS =
+	ADDON_LIBS += /usr/lib/librealsense2.so
 linux:
+	ADDON_LIBS =
+	ADDON_LIBS += /usr/lib/librealsense2.so
 win_cb:
 linuxarmv6l:
+	ADDON_LIBS =
+	ADDON_LIBS += /usr/lib/librealsense2.so
 linuxarmv7l:
+	ADDON_LIBS =
+	ADDON_LIBS += /usr/lib/librealsense2.so
 android/armeabi:	
 android/armeabi-v7a:	
