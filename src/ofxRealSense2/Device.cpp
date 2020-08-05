@@ -271,7 +271,11 @@ namespace ofxRealSense2
         this->depthPix.allocate(this->depthWidth, this->depthHeight, OF_IMAGE_COLOR);
         this->depthTex.allocate(this->depthWidth, this->depthHeight, GL_RGB);
         this->rawDepthPix.allocate(this->depthWidth, this->depthHeight, OF_IMAGE_GRAYSCALE);
+#ifdef TARGET_LINUX_ARM
+        this->rawDepthTex.allocate(this->depthWidth, this->depthHeight, GL_LUMINANCE);
+#else
         this->rawDepthTex.allocate(this->depthWidth, this->depthHeight, GL_LUMINANCE16);
+#endif
         this->colorizer.set_option(RS2_OPTION_COLOR_SCHEME, 2);
         this->depthEnabled = true;
     }
