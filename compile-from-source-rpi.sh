@@ -16,3 +16,7 @@ cd build
 cmake .. -DBUILD_EXAMPLES=true -DCMAKE_BUILD_TYPE=Release -DFORCE_LIBUVC=true
 make
 sudo make install
+
+sudo cp librealsense2.so /usr/lib/librealsense2.so
+
+
