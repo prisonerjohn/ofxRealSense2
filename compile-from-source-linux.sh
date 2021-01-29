@@ -20,12 +20,12 @@ sudo make install
 sudo cp librealsense2.so /usr/lib/librealsense2.so
 
 # OPTIONAL Python bindings
-cmake .. -DBUILD_PYTHON_BINDINGS=bool:true -DPYTHON_EXECUTABLE=$(which python3)
-make -j4
-sudo make install
-echo 'export PYTHONPATH=$PYTHONPATH:/usr/local/lib' >> ~/.bashrc
-source ~/.bashrc
-sudo apt-get install -y python-opengl
-sudo -H pip3 install pyopengl
-sudo -H pip3 install pyopengl_accelerate
+#cmake .. -DBUILD_PYTHON_BINDINGS=bool:true -DPYTHON_EXECUTABLE=$(which python3)
+#make -j4
+#sudo make install
+#echo 'export PYTHONPATH=$PYTHONPATH:/usr/local/lib' >> ~/.bashrc
+#source ~/.bashrc
+#sudo apt-get install -y python-opengl
+#sudo -H pip3 install pyopengl
+#sudo -H pip3 install pyopengl_accelerate
 
