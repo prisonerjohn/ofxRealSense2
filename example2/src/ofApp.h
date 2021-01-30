@@ -15,11 +15,13 @@ class ofApp : public ofBaseApp {
 
 		void keyPressed(int key);
 
-		ofxRealSense2::Context context;
-		ofEventListeners eventListeners;
+		void deviceAdded(std::string& serialNumber);
+
+		ofxRealSense2::Context rsContext;
+		std::shared_ptr<ofxRealSense2::Device> rsDevice;
 
         ofxXmlSettings settings;
 		int width, height, fps, alignment;
         bool pointsEnabled, holeFilling, spatialNoiseReduction, temporalNoiseReduction;
-
+		
 };
