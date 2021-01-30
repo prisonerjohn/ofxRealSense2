@@ -5,16 +5,20 @@
 
 class ofApp : public ofBaseApp {
 
-public:
-    void setup();
-    void exit();
+	public:
+		void setup();
+		void exit();
 
-    void update();
-    void draw();
+		void update();
+		void draw();
 
-    void keyPressed(int key);
+		void keyPressed(int key);
 
-    ofxRealSense2::Context context;
-    ofEventListeners eventListeners;
+		ofxRealSense2::Context context;
+		ofEventListeners eventListeners;
+
+		int width = 640;
+		int height = 480;
+		int fps = 30;
 
 };

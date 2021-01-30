@@ -6,11 +6,15 @@ void ofApp::setup() {
     this->eventListeners.push(this->context.deviceAddedEvent.newListener([&](std::string serialNumber) {
         ofLogNotice(__FUNCTION__) << "Starting device " << serialNumber;
         auto device = this->context.getDevice(serialNumber);
-        device->enableDepth();
-        device->enableColor();
-        device->enablePoints();
-        device->startPipeline();
-    }));
+		device->enableDepth(width, height, fps);
+		device->enableColor(width, height, fps);
+		//device->enablePoints();
+		device->startPipeline();
+
+		//device->holeFillingEnabled = true;
+		//device->temporalFilterEnabled = true;
+		device->alignMode = 2; // 0 none, 1 color to depth, 2 depth to color
+	}));
 
     try {
         this->context.setup(false);
@@ -33,9 +37,9 @@ void ofApp::draw() {
     int i = 0;
     auto it = this->context.getDevices().begin();
     while (it != this->context.getDevices().end()) {
-        int x = 640 * i;
-        it->second->getDepthTex().draw(x, 0);
-        it->second->getColorTex().draw(x, 360);
+        int x = width * i;
+        it->second->getColorTex().draw(x, 0);
+		it->second->getDepthTex().draw(x, height);
 
         ++it;
         ++i;
