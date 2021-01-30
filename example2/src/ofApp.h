@@ -2,6 +2,7 @@
 
 #include "ofMain.h"
 #include "ofxRealSense2.h"
+#include "ofxXmlSettings.h"
 
 class ofApp : public ofBaseApp {
 
@@ -17,8 +18,8 @@ class ofApp : public ofBaseApp {
 		ofxRealSense2::Context context;
 		ofEventListeners eventListeners;
 
-		int width = 640;
-		int height = 480;
-		int fps = 30;
+        ofxXmlSettings settings;
+		int width, height, fps, alignment;
+        bool pointsEnabled, holeFilling, spatialNoiseReduction, temporalNoiseReduction;
 
 };

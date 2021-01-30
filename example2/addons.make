@@ -1,1 +1,2 @@
 ofxRealSense2
+ofxXmlSettings
