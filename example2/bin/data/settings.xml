@@ -3,9 +3,10 @@
     <width>640</width>
     <height>480</height>
     <fps>30</fps>
-    <vsync_enabled>0</vsync_enabled>
+    <vsync_enabled>1</vsync_enabled>
     <over_under>1</over_under>
-    <alignment>2</alignment>
+    <window_scale>1</window_scale>
+    <alignment>1</alignment>
     <infrared_enabled>0</infrared_enabled>
     <emitter_enabled>1</emitter_enabled>
     <points_enabled>0</points_enabled>

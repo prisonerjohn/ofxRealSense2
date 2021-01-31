@@ -7,6 +7,7 @@ void ofApp::setup() {
     fps = settings.getValue("settings:fps", 30);
     vsyncEnabled = (bool) settings.getValue("settings:vsync_enabled", 1);
     overUnder = (bool) settings.getValue("settings:over_under", 0); // 0 sbs, 1 ou
+    windowScale = settings.getValue("settings:window_scale", 1.0);
     alignment = settings.getValue("settings:alignment", 2); // 0 none, 1 depth, 2 color
     infraredEnabled = (bool) settings.getValue("settings:infrared_enabled", 0);
     pointsEnabled = (bool) settings.getValue("settings:points_enabled", 0);
@@ -19,15 +20,18 @@ void ofApp::setup() {
     ofAddListener(rsContext.deviceAddedEvent, this, &ofApp::deviceAdded);
     ofSetVerticalSync(vsyncEnabled);
     
+    widthScaled = width * windowScale;
+    heightScaled = height * windowScale;
+    
     if (overUnder) {
-        ofSetWindowShape(width, height*2);
+        ofSetWindowShape(widthScaled, heightScaled * 2);
         x1 = 0;
         y1 = 0;
         x2 = 0;
-        y2 = height;
+        y2 = heightScaled;
     } else {
-        ofSetWindowShape(width*2, height);
-        x1 = width;
+        ofSetWindowShape(widthScaled * 2, heightScaled);
+        x1 = widthScaled;
         y1 = 0;
         x2 = 0;
         y2 = 0;
@@ -76,11 +80,11 @@ void ofApp::draw() {
     ofBackground(0);
     if (rsDevice) {
         if (infraredEnabled) {
-            rsDevice->getInfraredTex().draw(x1, y1, width, height);
+            rsDevice->getInfraredTex().draw(x1, y1, widthScaled, heightScaled);
         } else {
-            rsDevice->getColorTex().draw(x1, y1, width, height);
+            rsDevice->getColorTex().draw(x1, y1, widthScaled, heightScaled);
         }
-        rsDevice->getDepthTex().draw(x2, y2, width, height);
+        rsDevice->getDepthTex().draw(x2, y2, widthScaled, heightScaled);
     }
 }
 

@@ -20,11 +20,12 @@ class ofApp : public ofBaseApp {
 		ofxRealSense2::Context rsContext;
 		std::shared_ptr<ofxRealSense2::Device> rsDevice;
 
-        ofxXmlSettings settings;
+		ofxXmlSettings settings;
 		int width, height, fps, alignment;
-        bool overUnder, vsyncEnabled;
-        int x1, y1, x2, y2;
-        bool pointsEnabled, emitterEnabled, infraredEnabled;
-        bool holeFilling, spatialNoiseReduction, temporalNoiseReduction;
+		bool overUnder, vsyncEnabled;
+		int x1, y1, x2, y2, widthScaled, heightScaled;
+		float windowScale;
+		bool pointsEnabled, emitterEnabled, infraredEnabled;
+		bool holeFilling, spatialNoiseReduction, temporalNoiseReduction;
 		
 };
