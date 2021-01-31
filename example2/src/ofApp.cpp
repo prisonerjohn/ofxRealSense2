@@ -16,6 +16,8 @@ void ofApp::setup() {
 
     ofDisableArbTex();
     ofAddListener(rsContext.deviceAddedEvent, this, &ofApp::deviceAdded);
+    //ofSetVerticalSync(true);
+    
     if (overUnder) {
         ofSetWindowShape(width, height*2);
         x1 = 0;
