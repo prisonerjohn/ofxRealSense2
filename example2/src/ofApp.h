@@ -22,6 +22,9 @@ class ofApp : public ofBaseApp {
 
         ofxXmlSettings settings;
 		int width, height, fps, alignment;
-        bool pointsEnabled, holeFilling, spatialNoiseReduction, temporalNoiseReduction;
+        bool overUnder;
+        int x1, y1, x2, y2;
+        bool pointsEnabled, emitterEnabled, infraredEnabled;
+        bool holeFilling, spatialNoiseReduction, temporalNoiseReduction;
 		
 };

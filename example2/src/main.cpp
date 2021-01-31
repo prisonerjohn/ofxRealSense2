@@ -5,7 +5,7 @@
 int main() {
 	
     int w = 640;
-    int h = 960;
+    int h = 480;
 
     // setup the GL context
 #ifdef TARGET_LINUX_ARM
