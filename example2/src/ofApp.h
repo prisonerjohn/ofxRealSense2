@@ -22,7 +22,7 @@ class ofApp : public ofBaseApp {
 
         ofxXmlSettings settings;
 		int width, height, fps, alignment;
-        bool overUnder;
+        bool overUnder, vsyncEnabled;
         int x1, y1, x2, y2;
         bool pointsEnabled, emitterEnabled, infraredEnabled;
         bool holeFilling, spatialNoiseReduction, temporalNoiseReduction;

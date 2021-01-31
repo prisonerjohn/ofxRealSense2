@@ -5,7 +5,8 @@ void ofApp::setup() {
     width = settings.getValue("settings:width", 640);
     height = settings.getValue("settings:height", 480);
     fps = settings.getValue("settings:fps", 30);
-    overUnder = settings.getValue("settings:over_under", 0); // 0 sbs, 1 ou
+    vsyncEnabled = (bool) settings.getValue("settings:vsync_enabled", 1);
+    overUnder = (bool) settings.getValue("settings:over_under", 0); // 0 sbs, 1 ou
     alignment = settings.getValue("settings:alignment", 2); // 0 none, 1 depth, 2 color
     infraredEnabled = (bool) settings.getValue("settings:infrared_enabled", 0);
     pointsEnabled = (bool) settings.getValue("settings:points_enabled", 0);
@@ -16,7 +17,7 @@ void ofApp::setup() {
 
     ofDisableArbTex();
     ofAddListener(rsContext.deviceAddedEvent, this, &ofApp::deviceAdded);
-    //ofSetVerticalSync(true);
+    ofSetVerticalSync(vsyncEnabled);
     
     if (overUnder) {
         ofSetWindowShape(width, height*2);
