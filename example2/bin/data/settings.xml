@@ -3,7 +3,7 @@
     <width>640</width>
     <height>480</height>
     <fps>30</fps>
-    <alignment>2</alignment>
+    <alignment>0</alignment>
     <points_enabled>0</points_enabled>
     <hole_filling>0</hole_filling>
     <spatial_noise_reduction>0</spatial_noise_reduction>

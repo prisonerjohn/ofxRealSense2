@@ -28,7 +28,7 @@ void ofApp::deviceAdded(std::string& serialNumber) {
     rsDevice = rsContext.getDevice(serialNumber);
     
     rsDevice->enableDepth(width, height, fps);
-    rsDevice->enableColor(width, height, fps);
+    rsDevice->enableInfrared(width, height, fps);
     if (pointsEnabled) rsDevice->enablePoints();
     rsDevice->startPipeline();
 
@@ -50,7 +50,7 @@ void ofApp::draw() {
     ofBackground(0);
     if (rsDevice) {
         rsDevice->getDepthTex().draw(0, height);
-        rsDevice->getColorTex().draw(0, 0);
+        rsDevice->getInfraredTex().draw(0, 0);
     }
 }
 
